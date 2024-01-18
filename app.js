@@ -26,7 +26,7 @@ const password = encodeURIComponent('Hu67GP91--');
 const MONGODB_URI = "mongodb+srv://user:" + password + "@thesis.wvtrbis.mongodb.net/?retryWrites=true&w=majority";
 
 console.log('MongoDB Connection String:', MONGODB_URI);
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(MONGODB_URI);
 const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
