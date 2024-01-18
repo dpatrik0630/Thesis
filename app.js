@@ -21,9 +21,10 @@ app.use('/users', auth);
 app.use('/laundries', laundryRoutes);
 app.use('/users', userRoutes);
 
-const MONGODB_URI = 'mongodb+srv://user:asdasd123@thesis.wvtrbis.mongodb.net/?retryWrites=true&w=majority';
 
-mongoose.connect(process.env.MONGODB_URI);
+
+console.log('MongoDB Connection String:', MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
