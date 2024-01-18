@@ -5,6 +5,8 @@ const User = require('../models/user');
 const auth = async (req, res, next) => {
   const token = req.header('x-auth-token');
 
+  console.log('Received Token:', token);
+
   if (!token) {
     return res.status(401).json({ message: 'Access denied. No token provided.' });
   }
@@ -13,6 +15,12 @@ const auth = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET, { algorithms: ['HS256'] });
     req.user = decoded;
     console.log('Decoded User:', req.user);
+    console.log('Decoded Token:', decoded)
+
+    if (!req.user) {
+      console.error('Error: req.user not set');
+      return res.status(401).json({ message: 'Access denied. No user information.' });
+    }
 
     const user = await User.findById(req.user.id);
 

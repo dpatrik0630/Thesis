@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const laundryController = require('../controllers/laundryController');
 const auth = require('../middleware/auth');
+router.use('/laundries', auth);
 
 router.get('/',laundryController.getAllLaundries);
 router.post('/',laundryController.createLaundry);

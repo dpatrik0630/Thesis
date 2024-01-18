@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
 
 userSchema.methods.generateToken = function () {
     return jwt.generateToken({
-        id: this._id,
+        id: this._id.toHexString(),
         username: this.username,
         role: this.role,
         permissions: this.permissions

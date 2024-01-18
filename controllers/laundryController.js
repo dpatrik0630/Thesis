@@ -16,6 +16,7 @@ const getAllLaundries = async (req, res) => {
       }
 
       res.json(laundries);
+      res.status(200).json();
   } catch (error) {
       res.status(500).json({ error: error.message });
   }
@@ -45,21 +46,32 @@ const getLaundryById = async (req, res) => {
 
 //POST
 const createLaundry = async (req, res) => {
-  const { date, relatedPeople, weight, amount } = req.body;
-
   try {
+    const { date, relatedPeople, role, weight, amount } = req.body;
 
-    if(req.user.role !== 'admin') {
-      return res.status(403).json({ message: 'Permission denied. Admin access required. '});
+    console.log('User Role:', req.user.role);
+    console.log('User Permissions:', req.user.permissions);
+    console.log('req.user:', req.user);
+
+    if (req.user.permissions.includes('write')) {
+      const updatedRelatedPeople = Array.isArray(relatedPeople) ? relatedPeople : [relatedPeople];
+
+      updatedRelatedPeople.push(req.user.username);
+
+      // Create a new laundry instance
+      const laundry = new Laundry({ date, relatedPeople, weight, amount });
+
+      // Save the laundry to the database
+      await laundry.save();
+
+      // Respond with the created laundry
+      res.status(201).json(laundry);
     } else {
-      relatedPeople.push(req.user.username);
+      res.status(403).json({ message: 'Permission denied.Write permission required.' });
     }
-
-    const laundry = new Laundry({ date, relatedPeople, weight, amount });
-    await laundry.save();
-    res.status(201).json(laundry);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error('Error creating laundry:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
@@ -92,6 +104,8 @@ const deleteLaundry = async (req, res) => {
     const { id } = req.params;
   
     try {
+
+      console.log('User Role:', req.user.role);  // Log the user role
 
       if(req.user.role !== 'admin') {
         return res.status(403).json({ message: 'Permission denied. Admin access required. '});
