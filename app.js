@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const laundryRoutes = require('./routes/laundryRoutes');
 const userRoutes = require('./routes/userRoutes');
-const relatedPeopleRoutes = require('./routes/relatedPersonRoutes');
+const relatedPeopleRoutes = require('./routes/relatedPeopleRoutes');
 const jwt = require('jsonwebtoken');
 const auth = require('./middleware/auth');
 const User = require('./models/user');
@@ -21,7 +21,7 @@ app.use('/laundries', auth);
 app.use('/users', auth);
 app.use('/laundries', laundryRoutes);
 app.use('/users', userRoutes);
-app.use('/relatedpeople', relatedPersonRoutes);
+app.use('/relatedpeople', relatedPeopleRoutes);
 
 const password = encodeURIComponent('Hu67GP91--');
 
