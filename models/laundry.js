@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const laundrySchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
-  relatedPeople: [String],
+  relatedPeople: String,
   weight: Number,
   amount: Number
 });
