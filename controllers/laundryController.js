@@ -14,8 +14,12 @@ const getAllLaundries = async (req, res) => {
       } else {
           laundries = await Laundry.find({ relatedPeople: req.user.username });
       }
-
-      res.json(laundries);
+      const laundriesWithRelatedPeople = laundries.map(laundry => ({
+        ...laundry._doc,
+        relatedPeople: laundry.relatedPeople || [],
+      }));
+  
+      res.json(laundriesWithRelatedPeople);
   } catch (error) {
       res.status(500).json({ error: error.message });
   }
