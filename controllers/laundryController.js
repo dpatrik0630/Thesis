@@ -50,28 +50,20 @@ const getLaundryById = async (req, res) => {
 //POST
 const createLaundry = async (req, res) => {
   try {
-    const { date, relatedPeople, role, weight, amount } = req.body;
+    const { date, relatedPeople, weight, amount } = req.body;
 
     console.log('User Role:', req.user.role);
     console.log('User Permissions:', req.user.permissions);
     console.log('req.user:', req.user);
 
-    if (req.user.permissions.includes('write')) {
-      const updatedRelatedPeople = Array.isArray(relatedPeople) ? relatedPeople : [relatedPeople];
-
-      updatedRelatedPeople.push(req.user.username);
-
-      // Create a new laundry instance
+    if (!date || !relatedPeople || !weight || !amount) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
       const laundry = new Laundry({ date, relatedPeople, weight, amount });
 
-      // Save the laundry to the database
       await laundry.save();
 
-      // Respond with the created laundry
       res.status(201).json(laundry);
-    } else {
-      res.status(403).json({ message: 'Permission denied.Write permission required.' });
-    }
   } catch (error) {
     console.error('Error creating laundry:', error);
     res.status(500).json({ message: 'Internal Server Error' });
