@@ -22,7 +22,7 @@ app.use('/users', userRoutes);
 app.use('/relatedpeople', relatedPeopleRoutes);
 
 app.use(cors({
-    origin: 'http://localhost:3000', 
+    origin: 'http://3.79.57.113:3000', 
     credentials: true 
   }));
 
