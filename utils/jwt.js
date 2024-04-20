@@ -1,21 +1,25 @@
 const jwt = require('jsonwebtoken');
-require('dotenv').config({ path: './secretkey.env' });
+
+/*const generateToken = (payload) => {
+    return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '100y' });
+};*/
 
 const generateToken = (payload) => {
-  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+    // Set the expiration time to 100 years from now
+    const expirationDate = new Date();
+    expirationDate.setFullYear(expirationDate.getFullYear() + 100);
+
+    // Generate the token with the provided payload and expiration time
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '100y' });
+
+    // Log the expiration time
+    console.log('Token will expire at:', expirationDate);
+    
+    return token;
 };
 
 const verifyToken = (token) => {
-  return jwt.verify(token, process.env.JWT_SECRET);
+    return jwt.verify(token, process.env.JWT_SECRET);
 };
 
-const verifyTokenStructure = (token) => {
-  const tokenParts = token.split('.');
-  return tokenParts.length === 3;
-};
-
-module.exports = {
-  generateToken,
-  verifyToken,
-  verifyTokenStructure,
-};
+module.exports = { generateToken, verifyToken };
