@@ -4,12 +4,10 @@ const User = require('../models/user');
 const auth = async (req, res, next) => {
     const token = req.header('x-auth-token');
 
-    // Skip token verification for /users/login route
     if (req.path === '/login') {
         return next();
     }
 
-    // Verify token for all other routes
     if (!token) {
         return res.status(401).json({ message: 'Access denied. No token provided.' });
     }

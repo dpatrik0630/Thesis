@@ -18,7 +18,6 @@ const loginUser = async (req, res) => {
   try {
     console.log('Attempting to log in with username:', username);
 
-    // Check if the username exists in the database
     const user = await User.findOne({ username });
 
     if (!user) {
@@ -28,7 +27,6 @@ const loginUser = async (req, res) => {
 
     console.log('User found:', user);
 
-    // Check if the password matches
     const isPasswordValid = await user.isValidPassword(password);
 
     if (!isPasswordValid) {
@@ -38,7 +36,6 @@ const loginUser = async (req, res) => {
 
     console.log('Password validated successfully');
 
-    // Generate access token
     const accessToken = jwt.generateToken({
       id: user._id,
       role: user.role,
@@ -46,7 +43,6 @@ const loginUser = async (req, res) => {
 
     console.log('Generated Token:', accessToken);
 
-    // Send the access token in the response
     res.json({ accessToken });
   } catch (error) {
     console.error('Error logging in:', error.message);

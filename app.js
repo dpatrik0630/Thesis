@@ -26,8 +26,6 @@ app.use(cors({
     credentials: true 
   }));
 
-
-// Connect to MongoDB
 const MONGODB_URI = process.env.MONGODB_URI;
 mongoose.connect(MONGODB_URI);
 const db = mongoose.connection;
@@ -55,13 +53,11 @@ db.once('open', async () => {
     }
 });
 
-// Middleware to handle errors
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
 });
 
-// Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });

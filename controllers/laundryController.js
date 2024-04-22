@@ -3,7 +3,7 @@ const moment = require('moment');
 
 const getAllLaundries = async (req, res) => {
     try {
-        const laundries = await Laundry.find();
+        const laundries = await Laundry.find().sort({date: -1});
         const laundriesWithRelatedPeople = laundries.map(laundry => ({
             ...laundry._doc,
             relatedPeople: laundry.relatedPeople || [],
